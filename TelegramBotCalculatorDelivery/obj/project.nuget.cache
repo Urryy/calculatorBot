@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "2M6BmjETDn2A+wzUKYEPLtIQC3EWE3cURrInJ4R25DvDHORH+YvMRSvcgR5F4ovPJf9HAV8cnJfkX3Wg3WkgcA==",
+  "success": true,
+  "projectFilePath": "E:\\EGZAMIN.NET\\TelegramBotCalculatorDelivery\\TelegramBotCalculatorDelivery\\TelegramBotCalculatorDelivery.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Lenovo\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512",
+    "C:\\Users\\Lenovo\\.nuget\\packages\\telegram.bot\\19.0.0\\telegram.bot.19.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}
