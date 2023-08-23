@@ -20,7 +20,7 @@ namespace TelegramBotCalculatorDelivery
 
                 client = new TelegramBotClient(_configuration["Token"]);
 
-                var webHook = $"https://localhost:7193/api/message/update";
+                var webHook = $"https://silklink-tracking.ru/api/message/update";
                 await client.SetWebhookAsync(webHook);
 
                 return client;
