@@ -16,14 +16,16 @@ namespace TelegramBotCalculatorDelivery
         {
             try
             {
-                if (client != null) return client;
+                Console.WriteLine("asdasdasd");
+                return new TelegramBotClient(_configuration["Token"]);
+                //if (client != null) return client;
 
-                client = new TelegramBotClient(_configuration["Token"]);
+                //client = new TelegramBotClient(_configuration["Token"]);
 
-                var webHook = $"https://silklink-tracking.ru/api/message/update";
-                await client.SetWebhookAsync(webHook);
+                //var webHook = $"https://silklink-tracking.ru/api/message/update";
+                //await client.SetWebhookAsync(webHook);
 
-                return client;
+                //return client;
             }
             catch (Exception ex)
             {
