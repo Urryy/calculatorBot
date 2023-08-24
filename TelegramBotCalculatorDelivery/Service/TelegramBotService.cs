@@ -103,12 +103,13 @@ namespace TelegramBotCalculatorDelivery.Service
 
                 if(devideWeightDestiny < 100)
                 {
-                    await _botClient.SendTextMessageAsync(upd.Message.Chat.Id, $"У вас низкая плотность. Груз занимает много места и мало весит.\nОбратитесь к менеджеру\n\n@silklink_cargo");
+                    await _botClient.SendTextMessageAsync(upd.Message.Chat.Id, $"У вас низкая плотность. Груз занимает много места и мало весит.\nОбратитесь к менеджеру.\n\n@silklink_cargo");
+                    return false;
                 }
 
                 if(_command.Weight > 1000)
                 {
-                    await _botClient.SendTextMessageAsync(upd.Message.Chat.Id, $"У вас большой вес вашего товара и для вас будет скидка.\nЧтобы узнать подробнее обратитесь к менеджеру\n\n@silklink_cargo");
+                    await _botClient.SendTextMessageAsync(upd.Message.Chat.Id, $"У вас большой вес вашего товара и для вас будет скидка.\nЧтобы узнать подробнее обратитесь к менеджеру.\n\n@silklink_cargo");
                 }
 
                 var valueSuperExpress = await ExecuteSuperExpress(devideWeightDestiny);
