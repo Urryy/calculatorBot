@@ -94,6 +94,7 @@ namespace TelegramBotCalculatorDelivery.Service
             if(_command.Density == 0)
             {
                 await _botClient.SendTextMessageAsync(upd.Message.Chat.Id, $"При расчете произошла ошибка");
+                _command.Name = "FinishCommand";
                 return false;
             }
 
@@ -104,6 +105,7 @@ namespace TelegramBotCalculatorDelivery.Service
                 if(devideWeightDestiny < 100)
                 {
                     await _botClient.SendTextMessageAsync(upd.Message.Chat.Id, $"У вас низкая плотность. Груз занимает много места и мало весит.\nОбратитесь к менеджеру.\n\n@silklink_cargo");
+                    _command.Name = "FinishCommand";
                     return false;
                 }
 
