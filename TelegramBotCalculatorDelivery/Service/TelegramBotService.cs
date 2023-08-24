@@ -62,7 +62,7 @@ namespace TelegramBotCalculatorDelivery.Service
             if(double.TryParse(upd.Message.Text.Replace(".", ","), out double resultWeight))
             {
                 _command.Weight = resultWeight;
-                await _botClient.SendTextMessageAsync(upd.Message.Chat.Id, "Введите пожалуйста объем вашего товара,\nнапример 10.0");
+                await _botClient.SendTextMessageAsync(upd.Message.Chat.Id, "Введите пожалуйста объем вашего товара в метр куб (м³),\nнапример 10.0");
                 _command.Name = "DensityCommand";
                 return true;
             }
@@ -100,6 +100,16 @@ namespace TelegramBotCalculatorDelivery.Service
             if(_command.Weight != 0 && _command.Density != 0)
             {
                 var devideWeightDestiny = _command.Weight / _command.Density;
+
+                if(devideWeightDestiny < 100)
+                {
+                    await _botClient.SendTextMessageAsync(upd.Message.Chat.Id, $"У вас низкая плотность. Груз занимает много места и мало весит.\nОбратитесь к менеджеру\n\n@silklink_cargo");
+                }
+
+                if(_command.Weight > 1000)
+                {
+                    await _botClient.SendTextMessageAsync(upd.Message.Chat.Id, $"У вас большой вес вашего товара и для вас будет скидка.\nЧтобы узнать подробнее обратитесь к менеджеру\n\n@silklink_cargo");
+                }
 
                 var valueSuperExpress = await ExecuteSuperExpress(devideWeightDestiny);
                 var valueExpress = await ExecuteExpress(devideWeightDestiny);
