@@ -45,6 +45,10 @@ namespace TelegramBotCalculatorDelivery.Service
                 _command.Density = 0;
                 _command.Weight = 0;
             }
+            else
+            {
+
+            }
             return true;   
         }
 
@@ -95,7 +99,7 @@ namespace TelegramBotCalculatorDelivery.Service
             {
                 await _botClient.SendTextMessageAsync(upd.Message.Chat.Id, $"При расчете произошла ошибка");
                 _command.Name = "FinishCommand";
-                return false;
+                return true;
             }
 
             if(_command.Weight != 0 && _command.Density != 0)
@@ -106,7 +110,7 @@ namespace TelegramBotCalculatorDelivery.Service
                 {
                     await _botClient.SendTextMessageAsync(upd.Message.Chat.Id, $"У вас низкая плотность. Груз занимает много места и мало весит.\nОбратитесь к менеджеру.\n\n@silklink_cargo");
                     _command.Name = "FinishCommand";
-                    return false;
+                    return true;
                 }
 
                 if(_command.Weight > 1000)
@@ -155,7 +159,7 @@ namespace TelegramBotCalculatorDelivery.Service
             }
             else
             {
-                return false;
+                return true;
             }
             
         }
