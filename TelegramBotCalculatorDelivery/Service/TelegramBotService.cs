@@ -7,12 +7,20 @@ namespace TelegramBotCalculatorDelivery.Service
 {
     public class TelegramBotService : ITelegramBotService
     {
-        private readonly TelegramBotClient _botClient;
+        private TelegramBotClient _botClient;
         private static BaseCommand _command = new BaseCommand();
-        public TelegramBotService(TelegramBot telegramBot)
+        public TelegramBotService()
         {
-            _botClient = telegramBot.GetBot().Result;
         }
+
+        public async Task<TelegramBotClient> GetClient()
+        {
+            if (_botClient != null) return _botClient;
+
+            _botClient = new TelegramBotClient("6567574057:AAHV3VaudTxt-9E9yZDjsAeYFwTWjYxqRYs");
+            return _botClient;
+        }
+
         public async Task<bool> Calculate(Update upd)
         {
             var isFinish = false;

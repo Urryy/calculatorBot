@@ -1,4 +1,6 @@
 ﻿using Telegram.Bot;
+using Telegram.Bot.Types;
+using TelegramBotCalculatorDelivery.Service;
 
 namespace TelegramBotCalculatorDelivery
 {
@@ -7,9 +9,11 @@ namespace TelegramBotCalculatorDelivery
     {
         private readonly IConfiguration _configuration;
         private TelegramBotClient client;
-        public TelegramBot(IConfiguration configuration)
+        private readonly ITelegramBotService _telegramBotService;
+        public TelegramBot(IConfiguration configuration, ITelegramBotService telegramBotService)
         {
             _configuration= configuration;
+            _telegramBotService = telegramBotService;
         }
 
         public async Task<TelegramBotClient> GetBot()
@@ -18,10 +22,12 @@ namespace TelegramBotCalculatorDelivery
             {
                 if (client != null) return client;
 
-                client = new TelegramBotClient(_configuration["Token"]);
+                client = await _telegramBotService.GetClient();
+                //client = new TelegramBotClient(_configuration["Token"]);
 
-                var webHook = $"https://silklink-tracking.ru/api/message/update";
-                await client.SetWebhookAsync(webHook);
+                client.StartReceiving(Update, Error);
+                //var webHook = $"https://silklink-tracking.ru:7000/api/message/update";
+                //await client.SetWebhookAsync(webHook);
 
                 return client;
             }
@@ -31,6 +37,19 @@ namespace TelegramBotCalculatorDelivery
                 throw;
             }
             
+        }
+
+        private async Task Error(ITelegramBotClient arg1, Exception arg2, CancellationToken arg3)
+        {
+            await arg1.DeleteWebhookAsync();
+            Console.WriteLine(arg2.Message);
+            return;
+        }
+
+        private async Task Update(ITelegramBotClient arg1, Update arg2, CancellationToken arg3)
+        {
+            await _telegramBotService.Calculate(arg2);
+            return;
         }
     }
 }
