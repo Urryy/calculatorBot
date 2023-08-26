@@ -45,10 +45,7 @@ namespace TelegramBotCalculatorDelivery.Service
                 _command.Density = 0;
                 _command.Weight = 0;
             }
-            else
-            {
 
-            }
             return true;   
         }
 

@@ -1,4 +1,5 @@
-﻿using Telegram.Bot;
+﻿using System.Diagnostics;
+using Telegram.Bot;
 using Telegram.Bot.Types;
 using TelegramBotCalculatorDelivery.Service;
 
@@ -20,12 +21,18 @@ namespace TelegramBotCalculatorDelivery
         {
             try
             {
-                if (client != null) return client;
+                if (client != null)
+                {
+                    await client.ReceiveAsync(Update, Error);
+                    return client;
+                }
 
                 client = await _telegramBotService.GetClient();
-                //client = new TelegramBotClient(_configuration["Token"]);
+                
+                await client.ReceiveAsync(Update, Error);
 
-                client.StartReceiving(Update, Error);
+                //WEBHOOK
+                //client = new TelegramBotClient(_configuration["Token"]);
                 //var webHook = $"https://silklink-tracking.ru:7000/api/message/update";
                 //await client.SetWebhookAsync(webHook);
 
@@ -33,23 +40,39 @@ namespace TelegramBotCalculatorDelivery
             }
             catch (Exception ex)
             {
-
-                throw;
+                Console.WriteLine(ex.Message);
+                Debug.WriteLine(ex.Message);
+                await GetBot();
+                return client;
             }
             
         }
 
-        private async Task Error(ITelegramBotClient arg1, Exception arg2, CancellationToken arg3)
+        private async Task Error(ITelegramBotClient arg1, Exception exc, CancellationToken cts)
         {
-            await arg1.DeleteWebhookAsync();
-            Console.WriteLine(arg2.Message);
+            Console.WriteLine(exc.Message);
+            Debug.WriteLine(exc.Message);
+
+            await client.CloseAsync();
+            await GetBot();
             return;
         }
 
-        private async Task Update(ITelegramBotClient arg1, Update arg2, CancellationToken arg3)
+        private async Task Update(ITelegramBotClient arg1, Update upd, CancellationToken cts)
         {
-            await _telegramBotService.Calculate(arg2);
-            return;
+            try
+            {
+                await _telegramBotService.Calculate(upd);
+                return;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                Debug.WriteLine(ex.Message);
+                await GetBot();
+                return;
+            }
+            
         }
     }
 }
