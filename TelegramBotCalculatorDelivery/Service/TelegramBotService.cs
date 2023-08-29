@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualBasic;
+using System.Globalization;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 using TelegramBotCalculatorDelivery.Commands;
@@ -60,7 +61,7 @@ namespace TelegramBotCalculatorDelivery.Service
 
         private async Task<bool> ExecuteWeightOfGood(Update upd)
         {
-            if(double.TryParse(upd.Message.Text.Replace(".", ","), out double resultWeight))
+            if(double.TryParse(upd.Message.Text, System.Globalization.NumberStyles.Any, CultureInfo.InvariantCulture, out double resultWeight))
             {
                 _command.Weight = resultWeight;
                 await _botClient.SendTextMessageAsync(upd.Message.Chat.Id, "Введите пожалуйста объем вашего товара в метр куб (м³),\nнапример 10.0");
@@ -76,7 +77,7 @@ namespace TelegramBotCalculatorDelivery.Service
 
         private async Task<bool> ExecuteDensityOfGood(Update upd)
         {
-            if (double.TryParse(upd.Message.Text.Replace(".", ","), out double resultDensity))
+            if (double.TryParse(upd.Message.Text,System.Globalization.NumberStyles.Any, CultureInfo.InvariantCulture ,out double resultDensity))
             {
                 _command.Density = resultDensity;
                 await _botClient.SendTextMessageAsync(upd.Message.Chat.Id, "Идет примерный расчет доставки в $ вашего товара.");
